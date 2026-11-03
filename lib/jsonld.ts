@@ -2,7 +2,6 @@ import { siteUrl } from "@/lib/site";
 
 type Setting = {
   companyName: string;
-  logoUrl: string | null;
   phone: string | null;
   email: string | null;
   address: string | null;
@@ -15,7 +14,7 @@ export function organizationJsonLd(s: Setting) {
     "@type": "Organization",
     name: s.companyName,
     url: siteUrl("/"),
-    ...(s.logoUrl ? { logo: siteUrl(s.logoUrl) } : {}),
+    logo: siteUrl("/cnmed-logo.svg"),
     ...(s.phone ? { telephone: s.phone } : {}),
     ...(s.email ? { email: s.email } : {}),
     ...(s.address ? { address: { "@type": "PostalAddress", streetAddress: s.address, addressCountry: "VN" } } : {}),

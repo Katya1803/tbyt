@@ -25,3 +25,4 @@ Các điểm spec chưa rõ hoặc phải chọn khi xây dựng. Mỗi mục: v
 21. **Ảnh trang chủ** — thêm 3 cột `bannerWide`, `bannerLeft`, `bannerRight` vào `SiteSetting` (migration `site_banners`), chọn trong admin → Thông tin công ty. Trang chủ vẫn giữ 1 thẻ `<h1>` (tên công ty, ẩn bằng `sr-only`) cho SEO.
 22. **Header/footer dùng file tĩnh** `public/cnmed-icon.svg`, `public/cnmed-logo.svg` theo yêu cầu của chủ dự án; nút nổi dùng `public/zalo-1.svg` và icon điện thoại (hiện ở cả desktop và mobile).
 23. **Danh mục ở trang chủ** — thay lưới danh mục có ảnh bằng sidebar trái dạng chữ (2 cấp), chỉ hiện từ màn hình lớn (lg); mobile dùng menu ở header.
+24. **Địa chỉ** — dùng lại trường `address` có sẵn, nhập mỗi dòng một địa chỉ (nhiều chi nhánh), footer hiển thị từng dòng kèm icon định vị; không thêm bảng/cột mới. Bỏ ô Logo khỏi admin (header/footer dùng file tĩnh; cột `logoUrl` vẫn còn trong DB nhưng không dùng).

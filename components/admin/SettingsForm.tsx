@@ -13,7 +13,6 @@ import { uploadImageFile } from "./upload-client";
 
 export type SettingsValues = {
   companyName: string;
-  logoUrl: string | null;
   bannerWide: string | null;
   bannerLeft: string | null;
   bannerRight: string | null;
@@ -29,7 +28,7 @@ export type SettingsValues = {
   defaultMetaDesc: string;
 };
 
-type ImageKey = "logoUrl" | "bannerWide" | "bannerLeft" | "bannerRight";
+type ImageKey = "bannerWide" | "bannerLeft" | "bannerRight";
 
 export function SettingsForm({ initial }: { initial: SettingsValues }) {
   const [values, setValues] = useState(initial);
@@ -106,8 +105,6 @@ export function SettingsForm({ initial }: { initial: SettingsValues }) {
     <form onSubmit={submit} className="max-w-2xl space-y-4 rounded-xl border bg-background p-4 md:p-6">
       {field("companyName", "Tên công ty *")}
 
-      {imageField("logoUrl", "Logo")}
-
       <div className="space-y-4 rounded-lg border p-4">
         <p className="font-medium">Ảnh trang chủ</p>
         {imageField("bannerWide", "Ảnh dài (bên trên) — nên dùng ảnh ngang, tỉ lệ khoảng 3:1")}
@@ -118,7 +115,7 @@ export function SettingsForm({ initial }: { initial: SettingsValues }) {
       {field("phone", "Hotline")}
       {field("zalo", "Số Zalo", false, "Nhập số điện thoại, ví dụ 0901234567")}
       {field("email", "Email")}
-      {field("address", "Địa chỉ", true)}
+      {field("address", "Địa chỉ", true, "Mỗi dòng một địa chỉ (ví dụ trụ sở, chi nhánh). Hiện ở chân trang kèm icon định vị.")}
       {field("googleMapsUrl", "Link Google Maps")}
       {field("facebookUrl", "Link Facebook")}
       {field("workingHours", "Giờ làm việc", true)}

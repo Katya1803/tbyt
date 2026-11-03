@@ -12,7 +12,6 @@ export default async function SettingsPage() {
       <SettingsForm
         initial={{
           companyName: s?.companyName ?? "",
-          logoUrl: s?.logoUrl ?? null,
           bannerWide: s?.bannerWide ?? null,
           bannerLeft: s?.bannerLeft ?? null,
           bannerRight: s?.bannerRight ?? null,
