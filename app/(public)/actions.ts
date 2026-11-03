@@ -13,6 +13,7 @@ const contactSchema = z.object({
   organization: z.string().trim().max(200, "Tên cơ sở tối đa 200 ký tự"),
   message: z.string().trim().max(2000, "Nội dung tối đa 2000 ký tự"),
   productId: z.coerce.number().int().positive().nullable().catch(null),
+  consent: z.literal("on", "Vui lòng đồng ý với việc xử lý dữ liệu cá nhân để gửi yêu cầu"),
 });
 
 export type ContactState = {
@@ -35,6 +36,7 @@ export async function submitContact(_prev: ContactState, formData: FormData): Pr
   const parsed = contactSchema.safeParse({
     ...values,
     productId: productIdRaw ? productIdRaw : null,
+    consent: String(formData.get("consent") ?? ""),
   });
   if (!parsed.success) return { error: parsed.error.issues[0].message, values };
   const data = parsed.data;
@@ -48,6 +50,7 @@ export async function submitContact(_prev: ContactState, formData: FormData): Pr
       organization: emptyToNull(data.organization),
       message: emptyToNull(data.message),
       productId: product?.id ?? null,
+      consentAt: new Date(),
     },
   });
   return { ok: true };

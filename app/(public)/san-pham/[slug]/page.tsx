@@ -72,7 +72,7 @@ export default async function ProductPage({ params }: PageProps<"/san-pham/[slug
       />
 
       <div id="bao-gia" className="mx-auto max-w-2xl scroll-mt-24">
-        <ContactForm title="Yêu cầu báo giá" productId={product.id} />
+        <ContactForm title="Yêu cầu báo giá" companyName={setting.companyName} productId={product.id} />
       </div>
 
       {related.length > 0 && (

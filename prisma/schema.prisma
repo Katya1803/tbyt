@@ -78,6 +78,7 @@ model ContactRequest {
   productId    Int?
   product      Product? @relation(fields: [productId], references: [id], onDelete: SetNull)
   isRead       Boolean  @default(false)
+  consentAt    DateTime? // when the visitor agreed to personal data processing
   createdAt    DateTime @default(now())
 
   @@index([isRead, createdAt])

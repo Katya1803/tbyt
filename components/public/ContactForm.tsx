@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useActionState } from "react";
 import { submitContact, type ContactState } from "@/app/(public)/actions";
 import { Button } from "@/components/ui/button";
@@ -9,10 +10,11 @@ import { Textarea } from "@/components/ui/textarea";
 
 type Props = {
   title: string;
+  companyName: string;
   productId?: number;
 };
 
-export function ContactForm({ title, productId }: Props) {
+export function ContactForm({ title, companyName, productId }: Props) {
   const [state, action, pending] = useActionState<ContactState, FormData>(submitContact, {});
   const v = state.values;
 
@@ -42,6 +44,16 @@ export function ContactForm({ title, productId }: Props) {
         <div className="space-y-2">
           <Label htmlFor="contact-message">Nội dung</Label>
           <Textarea id="contact-message" name="message" defaultValue={v?.message} rows={4} maxLength={2000} />
+        </div>
+        <div className="flex items-start gap-2">
+          <input id="contact-consent" name="consent" type="checkbox" required className="mt-1 size-4 shrink-0" />
+          <label htmlFor="contact-consent" className="text-sm text-muted-foreground">
+            Tôi đồng ý để {companyName} thu thập và sử dụng họ tên, số điện thoại, thông tin đã nhập để liên hệ tư vấn/báo giá theo{" "}
+            <Link href="/chinh-sach/chinh-sach-bao-mat" target="_blank" className="text-primary underline">
+              Chính sách bảo mật
+            </Link>
+            . *
+          </label>
         </div>
         {state.error && <p className="text-sm text-destructive">{state.error}</p>}
         {state.ok && <p className="rounded-md bg-green-50 p-3 text-sm text-green-700">Cảm ơn, chúng tôi sẽ liên hệ lại sớm</p>}

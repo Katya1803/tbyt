@@ -43,7 +43,7 @@ export default async function ContactPage() {
             </a>
           )}
         </section>
-        <ContactForm title="Gửi yêu cầu liên hệ" />
+        <ContactForm title="Gửi yêu cầu liên hệ" companyName={setting.companyName} />
       </div>
     </div>
   );
