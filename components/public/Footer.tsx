@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { db } from "@/lib/db";
 import { getSiteSetting } from "@/lib/site";
@@ -13,7 +14,7 @@ export async function Footer() {
     <footer className="mt-12 border-t bg-muted/40">
       <div className="mx-auto grid max-w-7xl gap-8 px-4 py-10 md:grid-cols-3">
         <div className="space-y-2 text-sm">
-          <p className="text-base font-bold text-primary">{setting.companyName}</p>
+          <Image src="/cnmed-logo.svg" alt={setting.companyName} width={640} height={470} unoptimized className="mb-2 h-18 w-auto" />
           {setting.address && <p>Địa chỉ: {setting.address}</p>}
           {setting.phone && (
             <p>

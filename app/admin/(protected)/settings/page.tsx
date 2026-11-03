@@ -13,6 +13,9 @@ export default async function SettingsPage() {
         initial={{
           companyName: s?.companyName ?? "",
           logoUrl: s?.logoUrl ?? null,
+          bannerWide: s?.bannerWide ?? null,
+          bannerLeft: s?.bannerLeft ?? null,
+          bannerRight: s?.bannerRight ?? null,
           phone: s?.phone ?? "",
           zalo: s?.zalo ?? "",
           email: s?.email ?? "",

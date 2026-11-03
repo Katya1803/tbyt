@@ -98,5 +98,8 @@ model SiteSetting {
   footerNote       String?
   defaultMetaTitle String?
   defaultMetaDesc  String?
+  bannerWide       String? // home page: long banner on top
+  bannerLeft       String? // home page: small banner, bottom left
+  bannerRight      String? // home page: small banner, bottom right
   updatedAt        DateTime @updatedAt
 }

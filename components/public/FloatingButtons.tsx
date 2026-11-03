@@ -1,4 +1,8 @@
+import Image from "next/image";
+import { Phone } from "lucide-react";
 import { getSiteSetting } from "@/lib/site";
+
+const circle = "flex size-12 items-center justify-center rounded-full shadow-lg transition hover:scale-105";
 
 export async function FloatingButtons() {
   const setting = await getSiteSetting();
@@ -8,13 +12,10 @@ export async function FloatingButtons() {
   if (!zalo && !phone) return null;
 
   return (
-    <div className="fixed right-4 bottom-4 z-50 flex flex-col gap-2">
+    <div className="fixed right-4 bottom-4 z-50 flex flex-col gap-3">
       {phone && (
-        <a
-          href={`tel:${phone}`}
-          className="rounded-full bg-green-600 px-5 py-3 text-center text-sm font-semibold text-white shadow-lg hover:bg-green-700 md:hidden"
-        >
-          Gọi ngay
+        <a href={`tel:${phone}`} aria-label="Gọi ngay" className={`${circle} bg-green-600 text-white hover:bg-green-700`}>
+          <Phone className="size-6" aria-hidden />
         </a>
       )}
       {zalo && (
@@ -22,9 +23,10 @@ export async function FloatingButtons() {
           href={`https://zalo.me/${zalo}`}
           target="_blank"
           rel="noopener noreferrer"
-          className="rounded-full bg-blue-500 px-5 py-3 text-center text-sm font-semibold text-white shadow-lg hover:bg-blue-600"
+          aria-label="Chat Zalo"
+          className={`${circle} bg-white`}
         >
-          Zalo
+          <Image src="/zalo-1.svg" alt="" width={36} height={36} unoptimized className="size-9" />
         </a>
       )}
     </div>

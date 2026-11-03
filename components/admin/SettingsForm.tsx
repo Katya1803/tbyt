@@ -14,6 +14,9 @@ import { uploadImageFile } from "./upload-client";
 export type SettingsValues = {
   companyName: string;
   logoUrl: string | null;
+  bannerWide: string | null;
+  bannerLeft: string | null;
+  bannerRight: string | null;
   phone: string;
   zalo: string;
   email: string;
@@ -26,6 +29,8 @@ export type SettingsValues = {
   defaultMetaDesc: string;
 };
 
+type ImageKey = "logoUrl" | "bannerWide" | "bannerLeft" | "bannerRight";
+
 export function SettingsForm({ initial }: { initial: SettingsValues }) {
   const [values, setValues] = useState(initial);
   const [uploading, setUploading] = useState(false);
@@ -36,10 +41,10 @@ export function SettingsForm({ initial }: { initial: SettingsValues }) {
     setValues((v) => ({ ...v, [key]: value }));
   }
 
-  async function uploadLogo(file: File) {
+  async function uploadImage(key: ImageKey, file: File) {
     setUploading(true);
     try {
-      set("logoUrl", await uploadImageFile(file));
+      set(key, await uploadImageFile(file));
     } catch (e) {
       toast.error(e instanceof Error ? e.message : "Không tải được ảnh");
     }
@@ -59,7 +64,7 @@ export function SettingsForm({ initial }: { initial: SettingsValues }) {
     });
   }
 
-  const field = (key: Exclude<keyof SettingsValues, "logoUrl">, label: string, multiline = false, hint?: string) => (
+  const field = (key: Exclude<keyof SettingsValues, ImageKey>, label: string, multiline = false, hint?: string) => (
     <div className="space-y-2">
       <Label htmlFor={key}>{label}</Label>
       {multiline ? (
@@ -71,32 +76,43 @@ export function SettingsForm({ initial }: { initial: SettingsValues }) {
     </div>
   );
 
+  const imageField = (key: ImageKey, label: string) => (
+    <div className="space-y-2">
+      <Label>{label}</Label>
+      {values[key] && (
+        <Image src={values[key]} alt={label} width={320} height={160} unoptimized className="h-24 w-auto max-w-full rounded border bg-white object-contain p-1" />
+      )}
+      <div className="flex gap-2">
+        <Input
+          type="file"
+          accept="image/jpeg,image/png,image/webp"
+          disabled={uploading}
+          onChange={(e) => {
+            const file = e.target.files?.[0];
+            e.target.value = "";
+            if (file) uploadImage(key, file);
+          }}
+        />
+        {values[key] && (
+          <Button type="button" variant="destructive" onClick={() => set(key, null)}>
+            Xóa ảnh
+          </Button>
+        )}
+      </div>
+    </div>
+  );
+
   return (
     <form onSubmit={submit} className="max-w-2xl space-y-4 rounded-xl border bg-background p-4 md:p-6">
       {field("companyName", "Tên công ty *")}
 
-      <div className="space-y-2">
-        <Label>Logo</Label>
-        {values.logoUrl && (
-          <Image src={values.logoUrl} alt="Logo" width={160} height={80} unoptimized className="h-20 w-auto rounded border bg-white object-contain p-1" />
-        )}
-        <div className="flex gap-2">
-          <Input
-            type="file"
-            accept="image/jpeg,image/png,image/webp"
-            disabled={uploading}
-            onChange={(e) => {
-              const file = e.target.files?.[0];
-              e.target.value = "";
-              if (file) uploadLogo(file);
-            }}
-          />
-          {values.logoUrl && (
-            <Button type="button" variant="destructive" onClick={() => set("logoUrl", null)}>
-              Xóa logo
-            </Button>
-          )}
-        </div>
+      {imageField("logoUrl", "Logo")}
+
+      <div className="space-y-4 rounded-lg border p-4">
+        <p className="font-medium">Ảnh trang chủ</p>
+        {imageField("bannerWide", "Ảnh dài (bên trên) — nên dùng ảnh ngang, tỉ lệ khoảng 3:1")}
+        {imageField("bannerLeft", "Ảnh nhỏ bên trái — tỉ lệ khoảng 2:1")}
+        {imageField("bannerRight", "Ảnh nhỏ bên phải — tỉ lệ khoảng 2:1")}
       </div>
 
       {field("phone", "Hotline")}

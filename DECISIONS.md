@@ -22,3 +22,5 @@ Các điểm spec chưa rõ hoặc phải chọn khi xây dựng. Mỗi mục: v
 18. **`.gitattributes`** — ép `*.sh` dùng LF để `scripts/backup.sh` chạy được khi commit từ Windows.
 19. **Mô tả meta dự phòng** — nếu trang không có mô tả và `defaultMetaDesc` trống, dùng tên công ty làm description để không thiếu thẻ `meta description` (Lighthouse SEO).
 20. **Ảnh eager/lazy** — chỉ vài thẻ đầu tiên (above the fold) tải eager; còn lại lazy, đúng checklist SEO "lazy load trừ ảnh đầu tiên".
+21. **Ảnh trang chủ** — thêm 3 cột `bannerWide`, `bannerLeft`, `bannerRight` vào `SiteSetting` (migration `site_banners`), chọn trong admin → Thông tin công ty. Trang chủ vẫn giữ 1 thẻ `<h1>` (tên công ty, ẩn bằng `sr-only`) cho SEO.
+22. **Header/footer dùng file tĩnh** `public/cnmed-icon.svg`, `public/cnmed-logo.svg` theo yêu cầu của chủ dự án; nút nổi dùng `public/zalo-1.svg` và icon điện thoại (hiện ở cả desktop và mobile).

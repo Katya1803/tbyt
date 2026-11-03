@@ -11,11 +11,8 @@ export async function Header() {
   return (
     <header className="sticky top-0 z-40 border-b bg-white">
       <div className="mx-auto flex max-w-7xl items-center gap-3 px-4 py-3">
-        <Link href="/" className="flex shrink-0 items-center gap-2">
-          {setting.logoUrl && (
-            <Image src={setting.logoUrl} alt={setting.companyName} width={120} height={40} unoptimized loading="eager" className="h-10 w-auto object-contain" />
-          )}
-          <span className="text-lg font-bold text-primary">{setting.companyName}</span>
+        <Link href="/" className="flex shrink-0 items-center" aria-label={setting.companyName || "Trang chủ"}>
+          <Image src="/cnmed-icon.svg" alt={setting.companyName} width={613} height={342} unoptimized loading="eager" className="h-10 w-auto" />
         </Link>
 
         <nav className="ml-4 hidden items-center gap-1 lg:flex" aria-label="Menu chính">

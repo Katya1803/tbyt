@@ -15,6 +15,9 @@ const optionalUrl = z
 const settingsSchema = z.object({
   companyName: z.string().trim().min(1, "Vui lòng nhập tên công ty").max(200),
   logoUrl: z.string().regex(UPLOAD_URL_PATTERN).nullable(),
+  bannerWide: z.string().regex(UPLOAD_URL_PATTERN).nullable(),
+  bannerLeft: z.string().regex(UPLOAD_URL_PATTERN).nullable(),
+  bannerRight: z.string().regex(UPLOAD_URL_PATTERN).nullable(),
   phone: z.string().trim().max(30),
   zalo: z.string().trim().max(30),
   email: z
@@ -43,6 +46,9 @@ export async function saveSettings(input: SettingsInput): Promise<ActionResult> 
   const values = {
     companyName: d.companyName,
     logoUrl: d.logoUrl,
+    bannerWide: d.bannerWide,
+    bannerLeft: d.bannerLeft,
+    bannerRight: d.bannerRight,
     phone: emptyToNull(d.phone),
     zalo: emptyToNull(d.zalo),
     email: emptyToNull(d.email),
@@ -57,7 +63,15 @@ export async function saveSettings(input: SettingsInput): Promise<ActionResult> 
 
   const previous = await db.siteSetting.findUnique({ where: { id: 1 } });
   await db.siteSetting.upsert({ where: { id: 1 }, update: values, create: { id: 1, ...values } });
-  if (previous?.logoUrl && previous.logoUrl !== d.logoUrl) await deleteImageFile(previous.logoUrl);
+  const replaced = [
+    [previous?.logoUrl, d.logoUrl],
+    [previous?.bannerWide, d.bannerWide],
+    [previous?.bannerLeft, d.bannerLeft],
+    [previous?.bannerRight, d.bannerRight],
+  ];
+  for (const [oldUrl, newUrl] of replaced) {
+    if (oldUrl && oldUrl !== newUrl) await deleteImageFile(oldUrl);
+  }
 
   return { ok: true };
 }

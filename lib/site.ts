@@ -3,7 +3,7 @@ import { db } from "@/lib/db";
 
 export const getSiteSetting = cache(async () => {
   const setting = await db.siteSetting.findUnique({ where: { id: 1 } });
-  return setting ?? { id: 1, companyName: "", logoUrl: null, phone: null, zalo: null, email: null, address: null,
+  return setting ?? { id: 1, companyName: "", logoUrl: null, bannerWide: null, bannerLeft: null, bannerRight: null, phone: null, zalo: null, email: null, address: null,
     googleMapsUrl: null, facebookUrl: null, workingHours: null, footerNote: null, defaultMetaTitle: null,
     defaultMetaDesc: null, updatedAt: new Date() };
 });

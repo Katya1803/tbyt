@@ -46,18 +46,41 @@ export default async function HomePage() {
 
   return (
     <div className="space-y-12">
-      <section className="rounded-2xl bg-primary/10 px-6 py-10 text-center md:py-14">
-        <h1 className="text-3xl font-bold text-primary md:text-4xl">{setting.companyName}</h1>
-        {setting.defaultMetaDesc && <p className="mx-auto mt-3 max-w-2xl text-muted-foreground">{setting.defaultMetaDesc}</p>}
-        <div className="mt-6 flex flex-wrap justify-center gap-3">
-          <a href="#san-pham" className="inline-flex h-10 items-center rounded-lg bg-primary px-5 text-sm font-medium text-primary-foreground hover:bg-primary/90">
-            Xem sản phẩm
-          </a>
-          <Link href="/lien-he" className="inline-flex h-10 items-center rounded-lg border border-primary bg-white px-5 text-sm font-medium text-primary hover:bg-primary/10">
-            Liên hệ
-          </Link>
-        </div>
-      </section>
+      <h1 className="sr-only">{setting.companyName}</h1>
+      {(setting.bannerWide || setting.bannerLeft || setting.bannerRight) && (
+        <section className="space-y-3 md:space-y-4" aria-label="Giới thiệu">
+          {setting.bannerWide && (
+            <Image
+              src={setting.bannerWide}
+              alt={setting.companyName}
+              width={1200}
+              height={400}
+              unoptimized
+              loading="eager"
+              fetchPriority="high"
+              className="aspect-[3/1] w-full rounded-xl object-cover"
+            />
+          )}
+          {(setting.bannerLeft || setting.bannerRight) && (
+            <div className="grid grid-cols-2 gap-3 md:gap-4">
+              {[setting.bannerLeft, setting.bannerRight].map(
+                (url, i) =>
+                  url && (
+                    <Image
+                      key={i}
+                      src={url}
+                      alt={setting.companyName}
+                      width={600}
+                      height={300}
+                      unoptimized
+                      className="aspect-[2/1] w-full rounded-xl object-cover"
+                    />
+                  ),
+              )}
+            </div>
+          )}
+        </section>
+      )}
 
       {sections.length > 0 && (
         <section id="san-pham">
