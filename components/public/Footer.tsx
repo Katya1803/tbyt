@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { MapPin, Phone } from "lucide-react";
+import { Mail, MapPin, Phone } from "lucide-react";
 import { db } from "@/lib/db";
 import { getSiteSetting } from "@/lib/site";
 import { ABOUT_SLUG } from "@/lib/utils-server";
@@ -34,8 +34,9 @@ export async function Footer() {
             </p>
           )}
           {setting.email && (
-            <p>
-              Email: <a href={`mailto:${setting.email}`}>{setting.email}</a>
+            <p className="flex items-center gap-2">
+              <Mail className="size-4 shrink-0 text-primary" aria-hidden />
+              <a href={`mailto:${setting.email}`}>{setting.email}</a>
             </p>
           )}
           {setting.workingHours && <p className="whitespace-pre-line">Giờ làm việc: {setting.workingHours}</p>}
@@ -56,11 +57,22 @@ export async function Footer() {
 
         <div className="space-y-2 text-sm">
           <p className="font-semibold">Kết nối</p>
-          <ul className="space-y-2">
+          <ul className="flex flex-wrap items-center gap-4">
             {setting.facebookUrl && (
               <li>
-                <a href={setting.facebookUrl} target="_blank" rel="noopener noreferrer" className="hover:text-primary">
-                  Facebook
+                <a
+                  href={setting.facebookUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Facebook"
+                  className="inline-flex items-center hover:opacity-80"
+                >
+                  <svg viewBox="0 0 24 24" className="size-6" aria-hidden>
+                    <path
+                      fill="#1877F2"
+                      d="M24 12.07C24 5.4 18.63 0 12 0S0 5.4 0 12.07C0 18.1 4.39 23.1 10.13 24v-8.44H7.08v-3.49h3.05V9.41c0-3.02 1.79-4.7 4.53-4.7 1.31 0 2.69.24 2.69.24v2.97h-1.51c-1.49 0-1.96.93-1.96 1.89v2.26h3.33l-.53 3.49h-2.8V24C19.61 23.1 24 18.1 24 12.07z"
+                    />
+                  </svg>
                 </a>
               </li>
             )}
