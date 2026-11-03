@@ -44,7 +44,7 @@ export default async function SearchPage({ searchParams }: PageProps<"/tim-kiem"
         <>
           <p className="mt-2 text-sm text-muted-foreground">Tìm thấy {total} sản phẩm</p>
           <div className="mt-6">
-            <ProductGrid products={products.map(toCard)} />
+            <ProductGrid products={products.map(toCard)} eagerCount={4} />
           </div>
           <Pagination basePath="/tim-kiem" page={page} totalPages={Math.ceil(total / PAGE_SIZE)} params={{ q }} />
         </>

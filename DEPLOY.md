@@ -108,3 +108,7 @@ docker compose up -d --build
 - Google Search Console: thêm domain (xác minh bằng DNS trên Cloudflare), submit `https://tenmien.com/sitemap.xml`.
 - Tạo Google Business Profile cho công ty.
 - Kiểm tra lại quy định pháp lý: kinh doanh thiết bị y tế (phân loại A/B/C/D, số lưu hành) và việc thông báo website thương mại điện tử với Bộ Công Thương nếu cần.
+
+## Ghi chú thêm khi chạy Docker trên Linux
+- Container `web` chạy bằng user uid 1001. Trước lần chạy đầu: `mkdir -p data/uploads && sudo chown -R 1001:1001 data/uploads`.
+- Image đã build/chạy thử: migrate + seed tự chạy khi khởi động, upload ảnh bằng sharp hoạt động trên alpine.

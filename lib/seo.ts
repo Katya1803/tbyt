@@ -30,7 +30,7 @@ type PageMetaInput = {
 
 export async function buildMetadata({ title, description, path, image, noindex }: PageMetaInput): Promise<Metadata> {
   const setting = await getSiteSetting();
-  const desc = description || setting.defaultMetaDesc || undefined;
+  const desc = description || setting.defaultMetaDesc || setting.companyName || undefined;
   const ogImage = image ?? setting.logoUrl ?? undefined;
 
   return {

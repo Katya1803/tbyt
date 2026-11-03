@@ -63,7 +63,7 @@ export default async function HomePage() {
         <section id="san-pham">
           <h2 className="mb-4 text-2xl font-bold">Danh mục sản phẩm</h2>
           <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:gap-4 lg:grid-cols-4">
-            {sections.map(({ root, products }) => {
+            {sections.map(({ root, products }, index) => {
               const image = products.find((p) => p.image)?.image;
               return (
                 <Link
@@ -72,7 +72,10 @@ export default async function HomePage() {
                   className="group flex flex-col overflow-hidden rounded-lg border bg-white transition hover:border-primary hover:shadow-md"
                 >
                   {image ? (
-                    <Image src={image.url} alt={root.name} width={400} height={400} unoptimized className="aspect-square w-full bg-white object-contain" />
+                    <Image src={image.url} alt={root.name} width={400} height={400} unoptimized
+                      loading={index < 4 ? "eager" : "lazy"}
+                      className="aspect-square w-full bg-white object-contain"
+                    />
                   ) : (
                     <div className="flex aspect-square w-full items-center justify-center bg-muted/40 text-primary/50">
                       <Stethoscope className="size-12" aria-hidden />

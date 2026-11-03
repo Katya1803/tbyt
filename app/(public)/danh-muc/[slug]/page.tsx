@@ -76,7 +76,7 @@ export default async function CategoryPage({ params, searchParams }: PageProps<"
 
       <div className="mt-6">
         {products.length > 0 ? (
-          <ProductGrid products={products.map(toCard)} />
+          <ProductGrid products={products.map(toCard)} eagerCount={4} />
         ) : (
           <p className="py-10 text-center text-muted-foreground">Chưa có sản phẩm trong danh mục này.</p>
         )}
