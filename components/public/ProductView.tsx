@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { Breadcrumb } from "./Breadcrumb";
 import { formatPrice } from "@/lib/format";
 import { ProductGallery } from "./ProductGallery";
 
@@ -21,27 +21,7 @@ export function ProductView({ name, price, attributes, images, description, brea
 
   return (
     <div className="@container">
-      <nav aria-label="Breadcrumb" className="mb-4 text-sm text-muted-foreground">
-        <ol className="flex flex-wrap items-center gap-1">
-          <li>
-            <Link href="/" className="hover:text-primary">
-              Trang chủ
-            </Link>
-          </li>
-          {breadcrumb.map((b) => (
-            <li key={b.href} className="flex items-center gap-1">
-              <span>›</span>
-              <Link href={b.href} className="hover:text-primary">
-                {b.name}
-              </Link>
-            </li>
-          ))}
-          <li className="flex items-center gap-1">
-            <span>›</span>
-            <span className="text-foreground">{name || "Tên sản phẩm"}</span>
-          </li>
-        </ol>
-      </nav>
+      <Breadcrumb items={[...breadcrumb, { name: name || "Tên sản phẩm" }]} />
 
       <div className="grid gap-8 @2xl:grid-cols-2">
         <ProductGallery images={images} name={name} />

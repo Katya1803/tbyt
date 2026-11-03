@@ -14,3 +14,6 @@ Các điểm spec chưa rõ hoặc phải chọn khi xây dựng. Mỗi mục: v
 10. **Ảnh upload nhưng chưa lưu sản phẩm** — file mồ côi, không dọn tự động (spec chỉ yêu cầu xóa file khi ảnh bị gỡ khỏi sản phẩm đã lưu).
 11. **Khung xem trước desktop/mobile** — `ProductView` dùng container query (`@2xl:`) thay vì breakpoint theo viewport, để khung mobile trong tab Xem trước hiển thị đúng bố cục mobile.
 12. **Select trong form admin** — dùng `<select>` native (`NativeSelect`) thay vì Select của shadcn (Base UI) cho đơn giản và dễ đưa vào form.
+13. **Ảnh đại diện danh mục ở trang chủ** — lấy ảnh chính của sản phẩm mới nhất (có ảnh) trong danh mục (kể cả danh mục con); không có thì hiện icon ống nghe mặc định.
+14. **Form liên hệ giữ dữ liệu khi lỗi** — React 19 tự reset form sau action, nên Server Action trả lại `values` để gán `defaultValue`; thành công thì form được reset trống.
+15. **Menu mobile** — dùng thẻ `<details>` thuần HTML (không JS), menu desktop dùng dropdown CSS hover/focus.
