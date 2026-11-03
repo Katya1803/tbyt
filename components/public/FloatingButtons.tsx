@@ -24,9 +24,9 @@ export async function FloatingButtons() {
           target="_blank"
           rel="noopener noreferrer"
           aria-label="Chat Zalo"
-          className={`${circle} bg-[#0068FF]`}
+          className={`${circle} bg-white`}
         >
-          <Image src="/zalo-button.svg" alt="" width={48} height={48} unoptimized className="size-12" />
+          <Image src="/zalo-1.svg" alt="" width={36} height={36} unoptimized className="size-9" />
         </a>
       )}
     </div>
