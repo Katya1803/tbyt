@@ -1,0 +1,102 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Category {
+  id          Int        @id @default(autoincrement())
+  name        String
+  slug        String     @unique
+  description String?
+  parentId    Int?
+  parent      Category?  @relation("CategoryTree", fields: [parentId], references: [id])
+  children    Category[] @relation("CategoryTree")
+  sortOrder   Int        @default(0)
+  metaTitle   String?
+  metaDesc    String?
+  products    Product[]
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+
+  @@index([parentId])
+}
+
+model Product {
+  id              Int              @id @default(autoincrement())
+  name            String
+  slug            String           @unique
+  categoryId      Int
+  category        Category         @relation(fields: [categoryId], references: [id])
+  price           BigInt?          // VND; null = "Liên hệ"
+  attributes      Json             @default("[]") // ordered [{ "label": string, "value": string }], e.g. Model, Hãng sản xuất, Xuất xứ
+  description     String           @default("")   // sanitized HTML
+  searchText      String           @default("")   // name + all attribute values, no diacritics, lowercase
+  isActive        Boolean          @default(true)
+  isFeatured      Boolean          @default(false)
+  metaTitle       String?
+  metaDesc        String?
+  images          ProductImage[]
+  contactRequests ContactRequest[]
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+
+  @@index([categoryId])
+  @@index([isActive, createdAt])
+}
+
+model ProductImage {
+  id        Int     @id @default(autoincrement())
+  productId Int
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  url       String
+  alt       String?
+  sortOrder Int     @default(0) // smallest = ảnh chính (main image), the rest = ảnh phụ
+
+  @@index([productId, sortOrder])
+}
+
+model Page {
+  id        Int      @id @default(autoincrement())
+  slug      String   @unique
+  title     String
+  content   String   @default("") // sanitized HTML
+  metaTitle String?
+  metaDesc  String?
+  updatedAt DateTime @updatedAt
+}
+
+model ContactRequest {
+  id           Int      @id @default(autoincrement())
+  name         String
+  phone        String
+  organization String?
+  message      String?
+  productId    Int?
+  product      Product? @relation(fields: [productId], references: [id], onDelete: SetNull)
+  isRead       Boolean  @default(false)
+  createdAt    DateTime @default(now())
+
+  @@index([isRead, createdAt])
+}
+
+// Single row, id = 1. Edited in admin → "Thông tin công ty".
+model SiteSetting {
+  id               Int      @id @default(1)
+  companyName      String
+  logoUrl          String?
+  phone            String?
+  zalo             String?
+  email            String?
+  address          String?
+  googleMapsUrl    String?
+  facebookUrl      String?
+  workingHours     String?
+  footerNote       String?
+  defaultMetaTitle String?
+  defaultMetaDesc  String?
+  updatedAt        DateTime @updatedAt
+}
