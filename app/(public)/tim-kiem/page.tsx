@@ -9,6 +9,8 @@ import { parsePage } from "@/lib/utils-server";
 
 export const dynamic = "force-dynamic";
 
+export const metadata = { title: "Tìm kiếm sản phẩm", robots: { index: false, follow: true } };
+
 const PAGE_SIZE = 24;
 
 export default async function SearchPage({ searchParams }: PageProps<"/tim-kiem">) {

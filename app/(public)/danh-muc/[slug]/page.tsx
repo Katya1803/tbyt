@@ -4,21 +4,35 @@ import { Pagination } from "@/components/Pagination";
 import { Breadcrumb } from "@/components/public/Breadcrumb";
 import { ProductGrid } from "@/components/public/ProductCard";
 import { db } from "@/lib/db";
-import { cardInclude, toCard } from "@/lib/products";
+import { JsonLd } from "@/components/public/JsonLd";
+import { breadcrumbJsonLd } from "@/lib/jsonld";
+import { cardInclude, getCategoryBySlug, toCard } from "@/lib/products";
+import { buildMetadata } from "@/lib/seo";
+import { getSiteSetting } from "@/lib/site";
 import { parsePage } from "@/lib/utils-server";
 
 export const dynamic = "force-dynamic";
 
 const PAGE_SIZE = 24;
 
+export async function generateMetadata({ params, searchParams }: PageProps<"/danh-muc/[slug]">) {
+  const { slug } = await params;
+  const page = parsePage((await searchParams).page);
+  const category = await getCategoryBySlug(slug);
+  if (!category) return {};
+  const setting = await getSiteSetting();
+  return buildMetadata({
+    title: category.metaTitle || `${category.name} chính hãng, giá tốt - ${setting.companyName}`,
+    description: category.metaDesc || category.description,
+    path: `/danh-muc/${category.slug}${page > 1 ? `?page=${page}` : ""}`,
+  });
+}
+
 export default async function CategoryPage({ params, searchParams }: PageProps<"/danh-muc/[slug]">) {
   const { slug } = await params;
   const page = parsePage((await searchParams).page);
 
-  const category = await db.category.findUnique({
-    where: { slug },
-    include: { parent: true, children: { orderBy: [{ sortOrder: "asc" }, { name: "asc" }] } },
-  });
+  const category = await getCategoryBySlug(slug);
   if (!category) notFound();
 
   const where = { isActive: true, categoryId: { in: [category.id, ...category.children.map((c) => c.id)] } };
@@ -35,6 +49,12 @@ export default async function CategoryPage({ params, searchParams }: PageProps<"
 
   return (
     <div>
+      <JsonLd
+        data={breadcrumbJsonLd([
+          ...(category.parent ? [{ name: category.parent.name, path: `/danh-muc/${category.parent.slug}` }] : []),
+          { name: category.name, path: `/danh-muc/${category.slug}` },
+        ])}
+      />
       <Breadcrumb
         items={[
           ...(category.parent ? [{ name: category.parent.name, href: `/danh-muc/${category.parent.slug}` }] : []),

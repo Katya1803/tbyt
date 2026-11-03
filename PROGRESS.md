@@ -18,3 +18,7 @@
 - Layout (header + dropdown danh mục, footer, nút nổi Gọi/Zalo), trang chủ, danh mục (phân trang 24), chi tiết sản phẩm (`ProductView` + form báo giá + liên quan), tìm kiếm không dấu, giới thiệu, chính sách, liên hệ, 404.
 - Test Playwright: các trang trả đúng status, mỗi trang đúng 1 `<h1>`, tìm "may tho" ra "Máy thở", form lỗi giữ dữ liệu, form thành công lưu `ContactRequest` (có `productId` khi gửi từ trang sản phẩm).
 - Cảnh báo hydration trong console chỉ do Playwright chèn `caret-color` vào input, không phải lỗi code.
+
+## Phase 5: SEO — XONG
+- `generateMetadata` mọi trang public (title/description/canonical/OG; canonical của `?page=N` trỏ về chính nó; `/tim-kiem` noindex), JSON-LD `Organization` (layout), `Product` (chỉ có `offers` khi có giá) + `BreadcrumbList`, `sitemap.xml`, `robots.txt`, `<html lang="vi">`, 404 thân thiện.
+- Đã kiểm bằng curl trên dev server. Chưa chạy Lighthouse thật (xem phần cuối).

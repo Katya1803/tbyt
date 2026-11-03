@@ -4,9 +4,19 @@ import { Stethoscope } from "lucide-react";
 import { ProductGrid } from "@/components/public/ProductCard";
 import { db } from "@/lib/db";
 import { cardInclude, toCard } from "@/lib/products";
+import { buildMetadata } from "@/lib/seo";
 import { getSiteSetting } from "@/lib/site";
 
 export const dynamic = "force-dynamic";
+
+export async function generateMetadata() {
+  const setting = await getSiteSetting();
+  return buildMetadata({
+    title: setting.defaultMetaTitle || setting.companyName,
+    description: setting.defaultMetaDesc,
+    path: "/",
+  });
+}
 
 export default async function HomePage() {
   const [setting, categories, featured] = await Promise.all([

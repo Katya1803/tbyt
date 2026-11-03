@@ -1,8 +1,14 @@
 import { Breadcrumb } from "@/components/public/Breadcrumb";
 import { ContactForm } from "@/components/public/ContactForm";
+import { buildMetadata } from "@/lib/seo";
 import { getSiteSetting } from "@/lib/site";
 
 export const dynamic = "force-dynamic";
+
+export async function generateMetadata() {
+  const setting = await getSiteSetting();
+  return buildMetadata({ title: `Liên hệ - ${setting.companyName}`, path: "/lien-he" });
+}
 
 export default async function ContactPage() {
   const setting = await getSiteSetting();
