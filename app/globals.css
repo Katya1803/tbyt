@@ -129,3 +129,14 @@
     @apply font-sans;
   }
 }
+
+.prose table th,
+.prose table td {
+  border: 1px solid var(--border);
+  padding: 0.5rem 0.75rem;
+}
+
+.prose img {
+  max-width: 100%;
+  height: auto;
+}
