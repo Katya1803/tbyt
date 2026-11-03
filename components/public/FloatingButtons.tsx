@@ -12,7 +12,7 @@ export async function FloatingButtons() {
   if (!zalo && !phone) return null;
 
   return (
-    <div className="fixed right-4 bottom-4 z-50 flex flex-col gap-3">
+    <div className="fixed right-4 top-1/2 z-50 -translate-y-1/2 flex flex-col gap-3">
       {phone && (
         <a href={`tel:${phone}`} aria-label="Gọi ngay" className={`${circle} bg-green-600 text-white hover:bg-green-700`}>
           <Phone className="size-6" aria-hidden />
