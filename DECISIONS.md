@@ -24,3 +24,4 @@ Các điểm spec chưa rõ hoặc phải chọn khi xây dựng. Mỗi mục: v
 20. **Ảnh eager/lazy** — chỉ vài thẻ đầu tiên (above the fold) tải eager; còn lại lazy, đúng checklist SEO "lazy load trừ ảnh đầu tiên".
 21. **Ảnh trang chủ** — thêm 3 cột `bannerWide`, `bannerLeft`, `bannerRight` vào `SiteSetting` (migration `site_banners`), chọn trong admin → Thông tin công ty. Trang chủ vẫn giữ 1 thẻ `<h1>` (tên công ty, ẩn bằng `sr-only`) cho SEO.
 22. **Header/footer dùng file tĩnh** `public/cnmed-icon.svg`, `public/cnmed-logo.svg` theo yêu cầu của chủ dự án; nút nổi dùng `public/zalo-1.svg` và icon điện thoại (hiện ở cả desktop và mobile).
+23. **Danh mục ở trang chủ** — thay lưới danh mục có ảnh bằng sidebar trái dạng chữ (2 cấp), chỉ hiện từ màn hình lớn (lg); mobile dùng menu ở header.

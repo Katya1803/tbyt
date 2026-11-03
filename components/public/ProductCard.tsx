@@ -33,9 +33,9 @@ export function ProductCard({ product, priority = false }: { product: CardProduc
 }
 
 // eagerCount: number of leading cards (above the fold) loaded eagerly.
-export function ProductGrid({ products, eagerCount = 0 }: { products: CardProduct[]; eagerCount?: number }) {
+export function ProductGrid({ products, eagerCount = 0, compact = false }: { products: CardProduct[]; eagerCount?: number; compact?: boolean }) {
   return (
-    <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:gap-4 lg:grid-cols-4">
+    <div className={`grid grid-cols-2 gap-3 sm:grid-cols-3 md:gap-4 ${compact ? "" : "lg:grid-cols-4"}`}>
       {products.map((p, i) => (
         <ProductCard key={p.id} product={p} priority={i < eagerCount} />
       ))}
