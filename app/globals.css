@@ -7,6 +7,7 @@
 
 @theme inline {
   --color-background: var(--background);
+  --color-gold-ink: var(--gold-ink);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--font-geist-mono);
@@ -56,18 +57,20 @@
   --card-foreground: oklch(0.145 0 0);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.52 0.14 235);
-  --primary-foreground: oklch(0.985 0 0);
+  /* Dark gold: passes 4.5:1 contrast with white text */
+  --primary: #9a6f14;
+  --primary-foreground: #ffffff;
+  --gold-ink: #3d2c05;
   --secondary: oklch(0.97 0 0);
   --secondary-foreground: oklch(0.205 0 0);
   --muted: oklch(0.97 0 0);
   --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
+  --accent: #fbf3dc;
+  --accent-foreground: #5c4209;
   --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.922 0 0);
+  --border: #ece3cc;
   --input: oklch(0.922 0 0);
-  --ring: oklch(0.708 0 0);
+  --ring: #c99a2e;
   --chart-1: oklch(0.87 0 0);
   --chart-2: oklch(0.556 0 0);
   --chart-3: oklch(0.439 0 0);
@@ -139,4 +142,200 @@
 .prose img {
   max-width: 100%;
   height: auto;
+}
+
+/* ---------- Gold theme & effects (public site) ---------- */
+
+/* Same gradient as the CNMed logo. 200% width so it can shimmer seamlessly. */
+@utility bg-gold {
+  background-image: linear-gradient(110deg, #c99a2e 0%, #f2d777 25%, #d4a93c 50%, #f4dc7c 75%, #c99a2e 100%);
+  background-size: 200% auto;
+}
+
+/* Gradient text, darker than bg-gold so it stays readable on white.
+   The gradient only paints inside the element box, so add room above for
+   stacked Vietnamese diacritics on capitals (Ế, Ổ, Ặ...), otherwise they turn invisible. */
+@utility text-gold {
+  padding-block: 0.25em 0.05em;
+  background-image: linear-gradient(100deg, #8a6210 0%, #b8862a 25%, #e2bb55 50%, #b8862a 75%, #8a6210 100%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+@utility shadow-gold {
+  box-shadow: 0 12px 32px -12px rgb(201 154 46 / 0.6);
+}
+
+@utility animate-shimmer {
+  animation: gold-shimmer 4s linear infinite;
+}
+
+@utility animate-twinkle {
+  animation: gold-twinkle 1.8s ease-in-out infinite;
+}
+
+/* Expanding halo. Set the color with [--pulse:...] on the element. */
+@utility pulse-ring {
+  animation: pulse-ring 2s ease-out infinite;
+}
+
+/* Shake + pulse halo together (both use `animation`, so they must be combined). */
+@utility animate-wiggle-pulse {
+  animation:
+    wiggle 2s ease-in-out infinite,
+    pulse-ring 2s ease-out infinite;
+}
+
+/* Quick shake at the start of each cycle, then rest. */
+@keyframes wiggle {
+  0%, 30%, 100% {
+    transform: rotate(0deg);
+  }
+  5%, 15% {
+    transform: rotate(-15deg);
+  }
+  10%, 20% {
+    transform: rotate(15deg);
+  }
+  25% {
+    transform: rotate(-6deg);
+  }
+}
+
+/* Slides left and right, fading out at both ends (header slogan). */
+@utility animate-drift {
+  animation: drift 5s ease-in-out infinite alternate;
+}
+
+@keyframes drift {
+  0% {
+    opacity: 0;
+    transform: translateX(-3rem);
+  }
+  30%, 70% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(3rem);
+  }
+}
+
+@keyframes gold-shimmer {
+  to {
+    background-position: -200% center;
+  }
+}
+
+@keyframes gold-twinkle {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1) rotate(0deg);
+  }
+  50% {
+    opacity: 0.4;
+    transform: scale(0.75) rotate(15deg);
+  }
+}
+
+@keyframes pulse-ring {
+  0% {
+    box-shadow: 0 0 0 0 var(--pulse, rgb(201 154 46 / 0.6));
+  }
+  70%, 100% {
+    box-shadow: 0 0 0 14px transparent;
+  }
+}
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+}
+
+/* Public site on desktop: smaller root font size scales the whole rem-based UI
+   down ~1.28x (like zooming the browser to ~78%). Phones keep 16px for readability;
+   the admin is not affected because it has no .public-site wrapper. */
+@media (min-width: 1024px) {
+  :root:has(.public-site) {
+    font-size: 12.5px;
+  }
+}
+
+/* Soft gold glows behind the public pages. */
+.luxe-bg {
+  background:
+    radial-gradient(60rem 28rem at 0% 0%, rgb(242 215 119 / 0.22), transparent 65%),
+    radial-gradient(50rem 30rem at 100% 35%, rgb(212 169 60 / 0.12), transparent 65%),
+    radial-gradient(50rem 30rem at 0% 85%, rgb(242 215 119 / 0.14), transparent 65%),
+    #fffdf8;
+}
+
+/* Light sweep across a card on hover. */
+.card-shine {
+  position: relative;
+  overflow: hidden;
+}
+.card-shine::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(115deg, transparent 35%, rgb(255 255 255 / 0.6) 50%, transparent 65%);
+  transform: translateX(-120%);
+  transition: transform 0.8s ease;
+  pointer-events: none;
+}
+.card-shine:hover::after {
+  transform: translateX(120%);
+}
+
+/* Header logo: the logo shape is used as a mask, filled with a moving gold
+   gradient plus a white glint, so the logo itself shimmers. */
+.logo-gold {
+  display: block;
+  background-image:
+    linear-gradient(110deg, transparent 40%, rgb(255 255 255 / 0.85) 50%, transparent 60%),
+    linear-gradient(110deg, #c99a2e 0%, #f2d777 25%, #d4a93c 50%, #f4dc7c 75%, #c99a2e 100%);
+  background-size: 250% 100%, 200% 100%;
+  /* Which logo to use as the mask; override with [--logo:url(...)] */
+  -webkit-mask: var(--logo, url("/cnmed-icon.svg")) center / contain no-repeat;
+  mask: var(--logo, url("/cnmed-icon.svg")) center / contain no-repeat;
+  animation: logo-glint 3.5s ease-in-out infinite;
+}
+
+@keyframes logo-glint {
+  0% {
+    background-position: 130% 0, 0% 0;
+  }
+  60%, 100% {
+    background-position: -30% 0, -200% 0;
+  }
+}
+
+/* Sections fade in while scrolling (CSS only; browsers without support just show them). */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .reveal {
+      animation: fade-up linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 35%;
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-shimmer,
+  .animate-twinkle,
+  .animate-wiggle-pulse,
+  .animate-drift,
+  .logo-gold,
+  .pulse-ring {
+    animation: none;
+  }
+  .card-shine::after {
+    display: none;
+  }
 }

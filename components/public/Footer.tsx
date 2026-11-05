@@ -1,53 +1,69 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Mail, MapPin, Phone } from "lucide-react";
-import { db } from "@/lib/db";
-import { getSiteSetting } from "@/lib/site";
-import { ABOUT_SLUG } from "@/lib/utils-server";
+import { getPolicyPages, getSiteSetting } from "@/lib/site";
+
+const headingClass = "text-gold text-base font-bold uppercase tracking-wide";
+const iconClass = "size-4 shrink-0 text-primary";
 
 export async function Footer() {
-  const [setting, policies] = await Promise.all([
-    getSiteSetting(),
-    db.page.findMany({ where: { slug: { not: ABOUT_SLUG } }, orderBy: { id: "asc" }, select: { slug: true, title: true } }),
-  ]);
+  const [setting, policies] = await Promise.all([getSiteSetting(), getPolicyPages()]);
 
   const addresses = (setting.address ?? "")
     .split(/\r?\n/)
     .map((line) => line.trim())
     .filter(Boolean);
 
+  const fanpage = (
+    <Image
+      src={setting.footerImage ?? "/cnmed-page.webp"}
+      alt={`Fanpage Facebook ${setting.companyName}`}
+      width={576}
+      height={324}
+      unoptimized
+      className="aspect-video w-full object-cover transition duration-500 group-hover:scale-105"
+    />
+  );
+  const fanpageClass =
+    "group mt-2 block w-72 max-w-full overflow-hidden rounded-xl bg-white shadow-sm ring-1 ring-[#e3cd8a] transition hover:-translate-y-1 hover:shadow-gold hover:ring-[#d4a93c]";
+
   return (
-    <footer className="mt-12 border-t bg-muted/40">
+    <footer className="mt-12 border-t border-[#ecdcae] bg-gradient-to-b from-[#fdf6e3] to-[#f8ecc9]">
+      <div aria-hidden className="h-1 bg-gold animate-shimmer" />
       <div className="mx-auto grid max-w-7xl gap-8 px-4 py-10 md:grid-cols-3">
         <div className="space-y-2 text-sm">
-          <Image src="/cnmed-logo.svg" alt={setting.companyName} width={640} height={470} unoptimized className="mb-2 h-18 w-auto" />
+          <span role="img" aria-label={setting.companyName} className="logo-gold mb-3 aspect-[640/470] h-24 [--logo:url(/cnmed-logo.svg)]" />
           {addresses.map((line) => (
             <p key={line} className="flex items-start gap-2">
-              <MapPin className="mt-0.5 size-4 shrink-0 text-primary" aria-hidden />
+              <MapPin className={`mt-0.5 ${iconClass}`} aria-hidden />
               <span>{line}</span>
             </p>
           ))}
           {setting.phone && (
             <p className="flex items-center gap-2">
-              <Phone className="size-4 shrink-0 text-primary" aria-hidden />
-              <a href={`tel:${setting.phone.replace(/\s/g, "")}`}>{setting.phone}</a>
+              <Phone className={iconClass} aria-hidden />
+              <a href={`tel:${setting.phone.replace(/\s/g, "")}`} className="hover:text-primary">
+                {setting.phone}
+              </a>
             </p>
           )}
           {setting.email && (
             <p className="flex items-center gap-2">
-              <Mail className="size-4 shrink-0 text-primary" aria-hidden />
-              <a href={`mailto:${setting.email}`}>{setting.email}</a>
+              <Mail className={iconClass} aria-hidden />
+              <a href={`mailto:${setting.email}`} className="hover:text-primary">
+                {setting.email}
+              </a>
             </p>
           )}
           {setting.workingHours && <p className="whitespace-pre-line">Giờ làm việc: {setting.workingHours}</p>}
         </div>
 
-        <div className="space-y-2 text-sm">
-          <p className="font-semibold">Chính sách</p>
-          <ul className="space-y-1">
+        <div className="space-y-3 text-sm">
+          <p className={headingClass}>Chính sách</p>
+          <ul className="space-y-1.5">
             {policies.map((p) => (
               <li key={p.slug}>
-                <Link href={`/chinh-sach/${p.slug}`} className="hover:text-primary">
+                <Link href={`/chinh-sach/${p.slug}`} className="transition-colors hover:text-primary">
                   {p.title}
                 </Link>
               </li>
@@ -55,8 +71,8 @@ export async function Footer() {
           </ul>
         </div>
 
-        <div className="space-y-2 text-sm">
-          <p className="font-semibold">Kết nối</p>
+        <div className="space-y-3 text-sm">
+          <p className={headingClass}>Kết nối</p>
           <ul className="flex flex-wrap items-center gap-4">
             {setting.facebookUrl && (
               <li>
@@ -65,7 +81,7 @@ export async function Footer() {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label="Facebook"
-                  className="inline-flex items-center hover:opacity-80"
+                  className="inline-flex items-center transition hover:scale-110"
                 >
                   <svg viewBox="0 0 24 24" className="size-6" aria-hidden>
                     <path
@@ -82,7 +98,7 @@ export async function Footer() {
                   href={`https://zalo.me/${setting.zalo.replace(/\D/g, "")}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 hover:text-primary"
+                  className="inline-flex items-center gap-2 transition-colors hover:text-primary"
                 >
                   <Image src="/zalo-1.svg" alt="Zalo" width={24} height={24} unoptimized className="size-6" />
                   {setting.zalo}
@@ -90,8 +106,20 @@ export async function Footer() {
               </li>
             )}
           </ul>
+          {setting.facebookUrl ? (
+            <a href={setting.facebookUrl} target="_blank" rel="noopener noreferrer" aria-label="Fanpage Facebook" className={fanpageClass}>
+              {fanpage}
+            </a>
+          ) : (
+            <div className={fanpageClass}>{fanpage}</div>
+          )}
           {setting.footerNote && <p className="whitespace-pre-line pt-2 text-muted-foreground">{setting.footerNote}</p>}
         </div>
+      </div>
+      <div className="mx-auto max-w-7xl px-4">
+        <p className="border-t border-[#e3cd8a] py-4 text-center text-sm text-muted-foreground">
+          Copyright © {new Date().getFullYear()} {setting.companyName}. All Rights Reserved.
+        </p>
       </div>
     </footer>
   );

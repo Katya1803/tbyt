@@ -17,7 +17,7 @@ export default async function NewCategoryPage() {
         id={null}
         parents={parents}
         hasChildren={false}
-        initial={{ name: "", slug: "", parentId: null, description: "", sortOrder: 0, metaTitle: "", metaDesc: "" }}
+        initial={{ name: "", slug: "", parentId: null, description: "", image: null, sortOrder: 0, metaTitle: "", metaDesc: "" }}
       />
     </div>
   );

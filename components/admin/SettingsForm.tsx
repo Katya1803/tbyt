@@ -16,6 +16,9 @@ export type SettingsValues = {
   bannerWide: string | null;
   bannerLeft: string | null;
   bannerRight: string | null;
+  footerImage: string | null;
+  slogan: string;
+  showSlogan: boolean;
   phone: string;
   zalo: string;
   email: string;
@@ -28,7 +31,7 @@ export type SettingsValues = {
   defaultMetaDesc: string;
 };
 
-type ImageKey = "bannerWide" | "bannerLeft" | "bannerRight";
+type ImageKey = "bannerWide" | "bannerLeft" | "bannerRight" | "footerImage";
 
 export function SettingsForm({ initial }: { initial: SettingsValues }) {
   const [values, setValues] = useState(initial);
@@ -63,7 +66,7 @@ export function SettingsForm({ initial }: { initial: SettingsValues }) {
     });
   }
 
-  const field = (key: Exclude<keyof SettingsValues, ImageKey>, label: string, multiline = false, hint?: string) => (
+  const field = (key: Exclude<keyof SettingsValues, ImageKey | "showSlogan">, label: string, multiline = false, hint?: string) => (
     <div className="space-y-2">
       <Label htmlFor={key}>{label}</Label>
       {multiline ? (
@@ -104,6 +107,13 @@ export function SettingsForm({ initial }: { initial: SettingsValues }) {
   return (
     <form onSubmit={submit} className="max-w-2xl space-y-4 rounded-xl border bg-background p-4 md:p-6">
       {field("companyName", "Tên công ty *")}
+      <div className="space-y-2 rounded-lg border p-4">
+        {field("slogan", "Khẩu hiệu", false, "Hiện trên thanh menu ở đầu trang (màn hình máy tính rộng).")}
+        <label className="flex items-center gap-2 text-sm">
+          <input type="checkbox" checked={values.showSlogan} onChange={(e) => set("showSlogan", e.target.checked)} />
+          Hiện khẩu hiệu trên web
+        </label>
+      </div>
 
       <div className="space-y-4 rounded-lg border p-4">
         <p className="font-medium">Ảnh trang chủ</p>
@@ -118,6 +128,10 @@ export function SettingsForm({ initial }: { initial: SettingsValues }) {
       {field("address", "Địa chỉ", true, "Mỗi dòng một địa chỉ (ví dụ trụ sở, chi nhánh). Hiện ở chân trang kèm icon định vị.")}
       {field("googleMapsUrl", "Link Google Maps")}
       {field("facebookUrl", "Link Facebook")}
+      {imageField(
+        "footerImage",
+        "Ảnh chân trang (ví dụ ảnh fanpage) — bấm vào ảnh sẽ mở Link Facebook. Khung cố định tỉ lệ 16:9, ảnh tự cắt vừa khung. Để trống thì dùng ảnh mặc định.",
+      )}
       {field("workingHours", "Giờ làm việc", true)}
       {field("footerNote", "Ghi chú chân trang", true)}
       {field("defaultMetaTitle", "Meta title mặc định")}

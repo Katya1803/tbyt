@@ -31,6 +31,7 @@ export default async function EditCategoryPage({ params }: PageProps<"/admin/cat
           slug: category.slug,
           parentId: category.parentId,
           description: category.description ?? "",
+          image: category.image,
           sortOrder: category.sortOrder,
           metaTitle: category.metaTitle ?? "",
           metaDesc: category.metaDesc ?? "",

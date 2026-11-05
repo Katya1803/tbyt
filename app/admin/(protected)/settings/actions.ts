@@ -17,6 +17,9 @@ const settingsSchema = z.object({
   bannerWide: z.string().regex(UPLOAD_URL_PATTERN).nullable(),
   bannerLeft: z.string().regex(UPLOAD_URL_PATTERN).nullable(),
   bannerRight: z.string().regex(UPLOAD_URL_PATTERN).nullable(),
+  footerImage: z.string().regex(UPLOAD_URL_PATTERN).nullable(),
+  slogan: z.string().trim().max(120, "Khẩu hiệu tối đa 120 ký tự"),
+  showSlogan: z.boolean(),
   phone: z.string().trim().max(30),
   zalo: z.string().trim().max(30),
   email: z
@@ -47,6 +50,9 @@ export async function saveSettings(input: SettingsInput): Promise<ActionResult> 
     bannerWide: d.bannerWide,
     bannerLeft: d.bannerLeft,
     bannerRight: d.bannerRight,
+    footerImage: d.footerImage,
+    slogan: emptyToNull(d.slogan),
+    showSlogan: d.showSlogan,
     phone: emptyToNull(d.phone),
     zalo: emptyToNull(d.zalo),
     email: emptyToNull(d.email),
@@ -65,6 +71,7 @@ export async function saveSettings(input: SettingsInput): Promise<ActionResult> 
     [previous?.bannerWide, d.bannerWide],
     [previous?.bannerLeft, d.bannerLeft],
     [previous?.bannerRight, d.bannerRight],
+    [previous?.footerImage, d.footerImage],
   ];
   for (const [oldUrl, newUrl] of replaced) {
     if (oldUrl && oldUrl !== newUrl) await deleteImageFile(oldUrl);

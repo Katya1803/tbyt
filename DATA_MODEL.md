@@ -17,6 +17,7 @@ model Category {
   name        String
   slug        String     @unique
   description String?
+  image       String? // shown on the home page category grid
   parentId    Int?
   parent      Category?  @relation("CategoryTree", fields: [parentId], references: [id])
   children    Category[] @relation("CategoryTree")

@@ -12,6 +12,7 @@ model Category {
   name        String
   slug        String     @unique
   description String?
+  image       String? // shown on the home page category grid
   parentId    Int?
   parent      Category?  @relation("CategoryTree", fields: [parentId], references: [id])
   children    Category[] @relation("CategoryTree")
@@ -102,5 +103,8 @@ model SiteSetting {
   bannerWide       String? // home page: long banner on top
   bannerLeft       String? // home page: small banner, bottom left
   bannerRight      String? // home page: small banner, bottom right
+  footerImage      String? // footer picture (e.g. fanpage), links to facebookUrl
+  slogan           String?  @default("Thiết bị y tế hiện đại chất lượng cao") // shown in the header menu bar
+  showSlogan       Boolean  @default(true)
   updatedAt        DateTime @updatedAt
 }

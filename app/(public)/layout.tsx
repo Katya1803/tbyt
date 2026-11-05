@@ -20,12 +20,12 @@ export default async function PublicLayout({ children }: LayoutProps<"/">) {
   const setting = await getSiteSetting();
 
   return (
-    <>
+    <div className="public-site luxe-bg flex flex-1 flex-col">
       <JsonLd data={organizationJsonLd(setting)} />
       <Header />
       <main className="mx-auto w-full max-w-7xl flex-1 px-4 py-6">{children}</main>
       <Footer />
       <FloatingButtons />
-    </>
+    </div>
   );
 }
